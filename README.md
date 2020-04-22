@@ -1,2 +1,7 @@
 # ebamk2_description
-Description package for eezyBotArm MK2. Works with ntdb_core and ntbd_msgs.
+ROs robbotic arm description package for eezyBotArm MK2. Works with ntdb_core and ntbd_msgs.
+
+# Related packages
+- https://github.com/inaciose/ntbd_base
+- https://github.com/inaciose/ntbd_firmware
+- https://github.com/inaciose/ntbd_web
