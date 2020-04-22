@@ -1,0 +1,37 @@
+<launch>
+	<!-- Serial node initialization -->
+        <arg name="baud" default="57600"/>
+        <arg name="port" default="/dev/ttyUSB0"/>         
+
+        <node pkg="rosserial_python" type="serial_node.py" name="init_serial_node">
+            <param name="baud" value="$(arg baud)"/>
+            <param name="port" value="$(arg port)"/>
+        </node>
+
+	<!-- NTBD core nodes -->
+        <node pkg="ntbd_core" type="position_limiter" name="position_limiter">
+            <rosparam param="position_llim">[100, -100, 100]</rosparam>
+            <rosparam param="position_ulim">[250, 100, 250]</rosparam>
+        </node>
+
+        <node pkg="ntbd_core" type="motors_limiter" name="motors_limiter">
+            <rosparam param="motors_llim">[0, 55, 20]</rosparam>
+            <rosparam param="motors_ulim">[180, 145, 110]</rosparam>
+        </node>
+
+        <node pkg="ntbd_core" type="path_planner" name="path_planner"/>
+
+	<!-- NTBD specific manipulator nodes -->
+        <node pkg="ebamk2_description" type="IK" name="IK"/>
+        <node pkg="ebamk2_description" type="motors_values" name="motors_values"/>
+        <node pkg="ebamk2_description" type="FK" name="FK"/>
+        <node pkg="ebamk2_description" type="physical_2_visual" name="physical_2_visual"/>
+
+	<!-- URDF Loading -->
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find ebamk2_description)/urdf/ebamk2_web.urdf"/>
+
+	<!--Robot Publisher and  Rosbridge -->
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+        <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>
+        <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+</launch>

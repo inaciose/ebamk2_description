@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# license removed for brevity
+import rospy
+import math
+from ntbd_msgs.msg import Motors_Array
+from geometry_msgs.msg import Point
+
+#Arm parameters
+L0 = 50
+L1 = 35
+L2 = 150
+L3 = 150
+
+pub = rospy.Publisher('actual_position', Point, queue_size=10)
+
+def callback(joints):
+    # Desired joints in radians:
+    angles = [joint*math.pi/180 for joint in joints.data]    # Desired position,cylindrical coordinates
+    #r = L2*math.cos(angles[1])+L3*math.cos(angles[2]-angles[1]+math.pi/2-math.pi+angles[1]) 
+    r = L2*math.cos(math.pi - angles[1]) + L3*math.cos(angles[2]-math.pi/2) 
+    # Resulting position:
+    x = r*math.cos((angles[0]-math.pi/2)/2)
+    y = r*math.sin((angles[0]-math.pi/2)/2)
+    L = L0+L1
+    z = L2*math.sin(math.pi - angles[1]) + L3*math.sin(angles[2]-math.pi/2) + L
+    pub.publish(x,y,z)
+
+def listener():
+    rospy.init_node('FK', anonymous=True)
+    rospy.Subscriber("motors", Motors_Array, callback)
+    rospy.spin()
+
+if __name__ == '__main__':
+    listener()

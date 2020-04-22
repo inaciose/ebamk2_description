@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# license removed for brevity
+import rospy
+import math
+from ntbd_msgs.msg import Motors_Array
+from geometry_msgs.msg import Point
+
+#Hipotenusa:
+def hipo(x,y):
+    return math.sqrt(x*x + y*y)
+#Cosines law:
+def lawOfCosines(a,b,c):
+    rate = (a*a + b*b - c*c) / (2 * a * b)
+    if abs(rate) > 1:
+        if max(rate,0) == 0:
+            rate = -1
+        if max(rate,0) == rate:
+            rate = 1
+    return math.acos(rate)
+
+def deg(rad):
+    return rad * 180 / math.pi
+
+L0 = 50
+L1 = 35
+L2 = 150 
+L3 = 150 
+
+pub = rospy.Publisher('motors_nogripper', Motors_Array, queue_size=10)
+
+def callback(data):
+#Desired position,cartesian coordinates taken from Point message
+    cartP = {'xEE':data.x, 'yEE': data.y, 'zEE': data.z}
+#Desired position,cylindrical coordinates
+    L = L0+L1
+    cylP = {'theta': math.atan(cartP['yEE']/cartP['xEE']), 'r':hipo(cartP['xEE'], cartP['yEE']), 'zhat':cartP['zEE']-L}
+    zhat = cylP['zhat']
+    rho = hipo(cylP['r'], zhat)
+    global angles
+    M1 = 2*cylP['theta'] + math.pi/2
+    M2 = math.atan(zhat/cylP['r']) + lawOfCosines(L2,rho,L3)
+    M3 = M2 + lawOfCosines(L2,L3,rho) - math.pi/2
+#Physical adjustments
+    angles = [M1,math.pi - M2,M3]
+#Radians to Degrees conversion
+    angles = [deg(angle) for angle in angles]
+    pub.publish(angles)
+
+def listener():
+    rospy.init_node('IK', anonymous=True)
+    rospy.Subscriber("desired_position", Point, callback)
+    rospy.spin()
+
+if __name__ == '__main__':
+    listener()
