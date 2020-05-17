@@ -1,0 +1,10 @@
+<launch>
+	<!-- Serial node initialization -->
+        <arg name="baud" default="57600"/>
+        <arg name="port" default="/dev/ttyUSB0"/>         
+
+        <node pkg="rosserial_python" type="serial_node.py" name="init_serial_node">
+            <param name="baud" value="$(arg baud)"/>
+            <param name="port" value="$(arg port)"/>
+        </node>
+</launch>

@@ -22,7 +22,7 @@
         <node pkg="ntbd_core" type="path_planner" name="path_planner"/>
 
 	<!-- NTBD specific manipulator nodes -->
-        <node pkg="ebamk2_description" type="IK" name="IK"/>
+        <node pkg="ebamk2_description" type="IK" name="IK" output="screen" />
         <node pkg="ebamk2_description" type="motors_values" name="motors_values"/>
         <node pkg="ebamk2_description" type="FK" name="FK"/>
         <node pkg="ebamk2_description" type="physical_2_visual" name="physical_2_visual"/>
