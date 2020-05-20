@@ -1,43 +1,28 @@
 <?xml version="1.0"?>
 
-<robot
-  name="ebamk2">
+<robot name="ebamk2">
 
 <!-- BASE LINK -->
   <link
     name="base_link">
     <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://ebamk2_description/meshes/base_link.STL" />
+        <mesh filename="package://ebamk2_description/meshes/base_link.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0 0.275 0 1" />
+      <material name="">
+        <color rgba="0 0.275 0 1" />
       </material>
     </visual>
   </link>
 
 <!-- JOINT 1 -->
-  <joint
-    name="joint_1"
-    type="revolute">
-    <origin
-      xyz="0 0 0.05"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="link_1" />
-    <axis
-      xyz="0 0 1" />
-    <limit
-      effort="0"
-      velocity="0"
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="link_1" />
+    <axis xyz="0 0 1" />
+    <limit effort="0" velocity="0"
       lower="-0.7854" upper="0.7854"/>
       <!--   [-45,45]-->
   </joint>
@@ -47,94 +32,88 @@
     name="link_1">
     <visual>
       <origin
-        xyz="0 -0.04 0"
-        rpy="0 0 0" />
+        xyz="0 -0.04 0" rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://ebamk2_description/meshes/link_1.STL" />
+        <mesh filename="package://ebamk2_description/meshes/link_1.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0 0.275 0 1" />
+      <material name="">
+        <color rgba="0 0.275 0 1" />
       </material>
     </visual>
   </link>
 
 <!-- JOINT 2 -->
-  <joint
-    name="joint_2"
-    type="revolute">
-    <origin
-      xyz="0 -0.005 0.035"
-      rpy="1.578 0 0" />
-    <parent
-      link="link_1" />
-    <child
-      link="link_2" />
-    <axis
-      xyz="0 0 1" />
-    <limit
-      effort="0"
-      velocity="0"
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0 -0.005 0.037" rpy="1.578 0 0" />
+    <parent link="link_1" />
+    <child link="link_2" />
+    <axis xyz="0 0 1" />
+    <limit effort="0" velocity="0"
       lower="-0.6109" upper="0.9599"/>
       <!--   [-35,55]-->
   </joint>
 
 <!-- LINK 2-->
-  <link
-    name="link_2">
+  <link name="link_2">
     <visual>
-      <origin
-        xyz="0 0 0.0075"
-        rpy="3.14159 0 0" />
+      <origin xyz="0 0 0.0075" rpy="3.14159 0 0" />
       <geometry>
-        <mesh
-          filename="package://ebamk2_description/meshes/link_2.STL" />
+        <mesh filename="package://ebamk2_description/meshes/link_2.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0 0 1 1" />
+      <material name="">
+        <color rgba="0 0 1 1" />
       </material>
     </visual>
   </link>
 
+  <!-- VIRTUAL MIMIC JOINT 2-->
+  <joint name="joint2v" type="revolute">
+    <origin xyz="-0.021 0.135 -0.0105" rpy="1.570796325 0 0" />
+    <parent link="link_2"/>
+    <child link="link_2v"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="30" velocity="1.0" lower="1.570796325" upper="1.570796325" />
+    <mimic joint="joint_2" multiplier="-1" offset="0" />
+  </joint>
+
+  <link name="link_2v">
+    <visual>
+      <geometry>
+        <cylinder length="0.001" radius="0.05"/>
+      </geometry>
+      <material name="green"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.001" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
 <!-- JOINT 3 -->
-  <joint
-    name="joint_3"
-    type="revolute">
-    <origin
-      xyz="-0.021 0.133 -0.0105"
-      rpy="0 0 0" />
-    <parent
-      link="link_2" />
-    <child
-      link="link_3" />
-    <axis
-      xyz="0 0 1" />
-    <limit
-      effort="0"
-      velocity="0"
+  <joint name="joint_3" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="link_2v" />
+    <child link="link_3" />
+    <axis xyz="0 1 0" />
+    <limit effort="0" velocity="0"
       lower="-1.2217" upper="0.3491"/>
-      <!--   [-70,20]-->
+      <!--[-70,20]-->
   </joint>
 
 <!-- LINK 3 -->
-   <link
-    name="link_3">
+   <link name="link_3">
     <visual>
-      <origin
-        xyz="0 0 0.0335"
-        rpy="3.14159 0 0.1309" />
+      <!--<origin xyz="0 0 0.0335" rpy="3.14159 0 0.1309" />-->
+      <origin xyz="0 0.0335  0.002" rpy="1.570796325 0 0" />
       <geometry>
-        <mesh
-          filename="package://ebamk2_description/meshes/link_3.STL" />
+        <mesh filename="package://ebamk2_description/meshes/link_3.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 0 0 1" />
+      <material name="">
+        <color rgba="1 0 0 1" />
       </material>
     </visual>
   </link>
