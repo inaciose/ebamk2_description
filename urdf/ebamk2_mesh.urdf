@@ -11,7 +11,7 @@
         <mesh filename="package://ebamk2_description/meshes/base_link.STL" />
       </geometry>
       <material name="">
-        <color rgba="0 0.275 0 1" />
+        <color rgba="1 0 0 1" />
       </material>
     </visual>
   </link>
@@ -24,7 +24,6 @@
     <axis xyz="0 0 1" />
     <limit effort="0" velocity="0"
       lower="-0.7854" upper="0.7854"/>
-      <!--   [-45,45]-->
   </joint>
 
 <!-- LINK 1 -->
@@ -49,8 +48,7 @@
     <child link="link_2" />
     <axis xyz="0 0 1" />
     <limit effort="0" velocity="0"
-      lower="-0.6109" upper="0.9599"/>
-      <!--   [-35,55]-->
+      lower="-0.80" upper="0.35"/>
   </joint>
 
 <!-- LINK 2-->
@@ -81,17 +79,18 @@
       <geometry>
         <cylinder length="0.001" radius="0.05"/>
       </geometry>
-      <material name="green"/>
+      <material name="">
+        <color rgba="0 0 0 1" />
+      </material>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.001" radius="0.01"/>
+        <cylinder length="0.0001" radius="0.0001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
   </link>
-
 
 <!-- JOINT 3 -->
   <joint name="joint_3" type="revolute">
@@ -100,14 +99,12 @@
     <child link="link_3" />
     <axis xyz="0 1 0" />
     <limit effort="0" velocity="0"
-      lower="-1.2217" upper="0.3491"/>
-      <!--[-70,20]-->
+      lower="-0.70" upper="0.50"/>
   </joint>
 
 <!-- LINK 3 -->
    <link name="link_3">
     <visual>
-      <!--<origin xyz="0 0 0.0335" rpy="3.14159 0 0.1309" />-->
       <origin xyz="0 0.0335  0.002" rpy="1.570796325 0 0" />
       <geometry>
         <mesh filename="package://ebamk2_description/meshes/link_3.STL" />
@@ -118,26 +115,31 @@
     </visual>
   </link>
 
+  <!-- JOINT 4 -->
   <joint name="joint_4" type="revolute">
-    <origin xyz="0.147 0 0" rpy="0 0 0" />
+    <origin xyz="0.1459 0.0185 0.0203" rpy="0 1.570796325 3.14159" />
     <parent link="link_3" />
     <child link="link_4" />
-    <axis xyz="0 0 1" />
+    <axis xyz="0 1 0" />
     <limit effort="0" velocity="0" lower="-1.01" upper="1.01"/>
+    <mimic joint="joint_3" multiplier="1" offset="0" />
   </joint>
 
+  <!-- LINK 3 -->
   <link name="link_4">
     <visual>
-      <origin xyz="0.015 0 0.002" rpy="0 0 0" />
+      <origin xyz="-0.006 0 -0.0394" rpy="0 0 0" />
       <geometry>
-        <box size="0.03 0.01 0.01" />
+        <mesh filename="package://ebamk2_description/meshes/link_4.STL" scale="0.001 0.001 0.001" />
       </geometry>
-      <material name="blue" />
+      <material name="">
+        <color rgba="0 0.275 0 1" />
+      </material>  
     </visual>
   </link>
 
   <joint name="joint_5" type="fixed">
-    <origin xyz="0.04 0 0.002" rpy="0 0 0" />
+    <origin xyz="-0.0095 0.001 -0.033" rpy="-0 1.570796325 0" />
     <parent link="link_4" />
     <child link="claw_base" />
     <axis xyz="1 0 0" />
@@ -147,12 +149,81 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size="0.03 0.005 0.03" />
+        <mesh filename="package://ebamk2_description/meshes/link_5.STL" scale="0.001 0.001 0.001" />
       </geometry>
-      <material name="red" />
+      <material name="">
+        <color rgba="0 0 1 1" />
+      </material>
     </visual>
   </link>
 
+  <joint name="joint_6" type="revolute">
+    <origin xyz="0.0196 0.021 -0.004" rpy="0 0 0" />
+    <parent link="claw_base"/>
+    <child link="claw_l"/>
+    <axis xyz="0 0 1" />
+    <limit effort="0" lower="-0.15" upper="0.65" velocity="1.0" />
+  </joint>
+
+  <link name="claw_l">
+    <visual>
+      <!--<origin xyz="0.0495 0.0102 0" rpy="0 0 2.9" />-->
+      <origin xyz="0.0505 0.000 0" rpy="0 0 2.9" />
+      <geometry>
+        <mesh filename="package://ebamk2_description/meshes/claw_l.STL" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_7" type="revolute">
+    <origin xyz="0.0196 0.0040 -0.004" rpy="0 0 0" />
+    <parent link="claw_base"/>
+    <child link="claw_r"/>
+    <axis xyz="0 0 -1" />
+    <limit effort="0" lower="-0.15" upper="0.65" velocity="1.0" />
+    <mimic joint="joint_6" multiplier="1.0" offset="0" />
+  </joint>
+
+  <link name="claw_r">
+    <visual>
+      <origin xyz="0.0488 0.0102 0" rpy="0 0 3.14159" />
+      <geometry>
+        <mesh filename="package://ebamk2_description/meshes/claw_r.STL" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
+
+
+  <transmission name="trans_1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint_1">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="servo1">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="trans_2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint_2">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="servo2">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="trans_3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint_3">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="servo3">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
 
 </robot>
