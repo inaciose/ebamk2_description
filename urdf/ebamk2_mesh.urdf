@@ -16,7 +16,7 @@
     </visual>
   </link>
 
-<!-- JOINT 1 -->
+<!-- JOINT 1 HIP-->
   <joint name="joint_1" type="revolute">
     <origin xyz="0 0 0.05" rpy="0 0 0" />
     <parent link="base_link" />
@@ -26,7 +26,7 @@
       lower="-0.7854" upper="0.7854"/>
   </joint>
 
-<!-- LINK 1 -->
+<!-- LINK 1 HIP-->
   <link
     name="link_1">
     <visual>
@@ -41,7 +41,7 @@
     </visual>
   </link>
 
-<!-- JOINT 2 -->
+<!-- JOINT 2 SHOULDER -->
   <joint name="joint_2" type="revolute">
     <origin xyz="0 -0.005 0.037" rpy="1.578 0 0" />
     <parent link="link_1" />
@@ -51,7 +51,7 @@
       lower="-0.80" upper="0.35"/>
   </joint>
 
-<!-- LINK 2-->
+<!-- LINK 2 SHOULDER -->
   <link name="link_2">
     <visual>
       <origin xyz="0 0 0.0075" rpy="3.14159 0 0" />
@@ -80,7 +80,7 @@
         <cylinder length="0.001" radius="0.05"/>
       </geometry>
       <material name="">
-        <color rgba="0 0 0 1" />
+        <color rgba="0 0 0 0" />
       </material>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
@@ -92,7 +92,7 @@
     </collision>
   </link>
 
-<!-- JOINT 3 -->
+<!-- JOINT 3 ELBOW -->
   <joint name="joint_3" type="revolute">
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="link_2v" />
@@ -102,7 +102,7 @@
       lower="-0.70" upper="0.50"/>
   </joint>
 
-<!-- LINK 3 -->
+<!-- LINK 3 ELBOW -->
    <link name="link_3">
     <visual>
       <origin xyz="0 0.0335  0.002" rpy="1.570796325 0 0" />
@@ -115,7 +115,7 @@
     </visual>
   </link>
 
-  <!-- JOINT 4 -->
+  <!-- JOINT 4 CLAW SUPPORT -->
   <joint name="joint_4" type="revolute">
     <origin xyz="0.1459 0.0185 0.0203" rpy="0 1.570796325 3.14159" />
     <parent link="link_3" />
@@ -125,7 +125,7 @@
     <mimic joint="joint_3" multiplier="1" offset="0" />
   </joint>
 
-  <!-- LINK 3 -->
+  <!-- LINK 4 CLAW SUPPORT -->
   <link name="link_4">
     <visual>
       <origin xyz="-0.006 0 -0.0394" rpy="0 0 0" />
@@ -138,6 +138,7 @@
     </visual>
   </link>
 
+  <!-- JOINT 5 CLAW BASE -->
   <joint name="joint_5" type="fixed">
     <origin xyz="-0.0095 0.001 -0.033" rpy="-0 1.570796325 0" />
     <parent link="link_4" />
@@ -145,6 +146,7 @@
     <axis xyz="1 0 0" />
   </joint>
 
+  <!-- LINK 4 CLAW BASE -->
   <link name="claw_base">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -157,32 +159,32 @@
     </visual>
   </link>
 
+  <!-- FINGERS -->
   <joint name="joint_6" type="revolute">
     <origin xyz="0.0196 0.021 -0.004" rpy="0 0 0" />
     <parent link="claw_base"/>
     <child link="claw_l"/>
     <axis xyz="0 0 1" />
-    <limit effort="0" lower="-0.15" upper="0.65" velocity="1.0" />
+    <limit effort="0" lower="0" upper="0.65" velocity="1.0" />
   </joint>
-
-  <link name="claw_l">
-    <visual>
-      <!--<origin xyz="0.0495 0.0102 0" rpy="0 0 2.9" />-->
-      <origin xyz="0.0505 0.000 0" rpy="0 0 2.9" />
-      <geometry>
-        <mesh filename="package://ebamk2_description/meshes/claw_l.STL" scale="0.001 0.001 0.001" />
-      </geometry>
-    </visual>
-  </link>
 
   <joint name="joint_7" type="revolute">
     <origin xyz="0.0196 0.0040 -0.004" rpy="0 0 0" />
     <parent link="claw_base"/>
     <child link="claw_r"/>
     <axis xyz="0 0 -1" />
-    <limit effort="0" lower="-0.15" upper="0.65" velocity="1.0" />
+    <limit effort="0" lower="0" upper="0.65" velocity="1.0" />
     <mimic joint="joint_6" multiplier="1.0" offset="0" />
   </joint>
+
+  <link name="claw_l">
+    <visual>
+      <origin xyz="0.0505 0.000 0" rpy="0 0 2.9" />
+      <geometry>
+        <mesh filename="package://ebamk2_description/meshes/claw_l.STL" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
 
   <link name="claw_r">
     <visual>
@@ -193,7 +195,7 @@
     </visual>
   </link>
 
-
+  <!-- TRANSMISSIONS -->
   <transmission name="trans_1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="joint_1">
@@ -224,6 +226,15 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-
+  <transmission name="trans_6">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint_6">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="servo4">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
 </robot>
