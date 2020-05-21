@@ -70,14 +70,14 @@
     <parent link="link_2"/>
     <child link="link_2v"/>
     <axis xyz="0 1 0"/>
-    <limit effort="30" velocity="1.0" lower="1.570796325" upper="1.570796325" />
+    <limit effort="30" velocity="1.0" lower="-3.14159" upper="3.14159" />
     <mimic joint="joint_2" multiplier="-1" offset="0" />
   </joint>
 
   <link name="link_2v">
     <visual>
       <geometry>
-        <cylinder length="0.001" radius="0.05"/>
+        <cylinder length="0.001" radius="0.0001"/>
       </geometry>
       <material name="">
         <color rgba="0 0 0 0" />
@@ -121,7 +121,7 @@
     <parent link="link_3" />
     <child link="link_4" />
     <axis xyz="0 1 0" />
-    <limit effort="0" velocity="0" lower="-1.01" upper="1.01"/>
+    <limit effort="0" velocity="0" lower="-3.14159" upper="3.14159"/>
     <mimic joint="joint_3" multiplier="1" offset="0" />
   </joint>
 
