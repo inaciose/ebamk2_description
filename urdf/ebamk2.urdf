@@ -29,10 +29,8 @@
     <child link="link_1" />
     <axis xyz="0 0 1" />
     <limit
-      effort="0"
-      velocity="0"
+      effort="0" velocity="0"
       lower="-0.7854" upper="0.7854"/>
-      <!--   [-45,45]-->
   </joint>
 
   <link name="link_1">
@@ -51,10 +49,8 @@
     <child link="link_2" />
     <axis xyz="1 0 0" />
     <limit
-      effort="0"
-      velocity="0"
-      lower="-1.0" upper="0.65"/>
-      <!--[-60,35]-->
+      effort="0" velocity="0"
+      lower="-0.80" upper="0.35"/>
   </joint>
 
   <link name="link_2">
@@ -98,10 +94,8 @@
     <child link="link_3" />
     <axis xyz="1 0 0" />
     <limit
-      effort="0"
-      velocity="0"
-      lower="-0.90" upper="0.20"/>
-      <!--[-52,12]-->
+      effort="0" velocity="0"
+      lower="-0.77" upper="0.45"/>
   </joint>
 
   <link name="link_3">

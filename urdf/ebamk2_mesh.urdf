@@ -14,6 +14,12 @@
         <color rgba="1 0 0 1" />
       </material>
     </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.0001" radius="0.0001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
   </link>
 
 <!-- JOINT 1 HIP-->
@@ -99,7 +105,7 @@
     <child link="link_3" />
     <axis xyz="0 1 0" />
     <limit effort="0" velocity="0"
-      lower="-0.70" upper="0.50"/>
+      lower="-0.77" upper="0.45"/>
   </joint>
 
 <!-- LINK 3 ELBOW -->
