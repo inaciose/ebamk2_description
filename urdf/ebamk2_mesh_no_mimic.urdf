@@ -71,6 +71,7 @@
   </link>
 
   <!-- VIRTUAL MIMIC JOINT 2-->
+  <!--
   <joint name="joint2v" type="revolute">
     <origin xyz="-0.021 0.135 -0.0105" rpy="1.570796325 0 0" />
     <parent link="link_2"/>
@@ -97,21 +98,25 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
   </link>
-
+-->
 <!-- JOINT 3 ELBOW -->
   <joint name="joint_3" type="revolute">
+    <!--<axis xyz="0 1 0" />
     <origin xyz="0 0 0" rpy="0 0 0" />
-    <parent link="link_2v" />
+    <parent link="link_2v" />-->
+    <axis xyz="0 0 1" />
+    <origin xyz="-0.021 0.133 -0.0105" rpy="0 0 0" />
+    <parent link="link_2" />
     <child link="link_3" />
-    <axis xyz="0 1 0" />
     <limit effort="0" velocity="0"
       lower="-0.77" upper="0.45"/>
   </joint>
 
-<!-- LINK 3 ELBOW -->
+  <!-- LINK 3 ELBOW -->
    <link name="link_3">
     <visual>
-      <origin xyz="0 0.0335  0.002" rpy="1.570796325 0 0" />
+      <!--<origin xyz="0 0.0335 0.002" rpy="1.570796325 0 0" />-->
+      <origin xyz="0 0 0.0335" rpy="3.14159 0 0.1309" />
       <geometry>
         <mesh filename="package://ebamk2_description/meshes/link_3.STL" />
       </geometry>
@@ -123,7 +128,8 @@
 
   <!-- JOINT 4 CLAW SUPPORT -->
   <joint name="joint_4" type="revolute">
-    <origin xyz="0.1459 0.0185 0.0203" rpy="0 1.570796325 3.14159" />
+    <!--<origin xyz="0.1459 0.0185 0.0203" rpy="0 1.570796325 3.14159" />-->
+    <origin xyz="0.147 0 0.018" rpy="-1.570796325 0 1.570796325" />
     <parent link="link_3" />
     <child link="link_4" />
     <axis xyz="0 1 0" />
@@ -134,6 +140,7 @@
   <!-- LINK 4 CLAW SUPPORT -->
   <link name="link_4">
     <visual>
+      <!--<origin xyz="-0.006 0 -0.0394" rpy="0 0 0" />-->
       <origin xyz="-0.006 0 -0.0394" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://ebamk2_description/meshes/link_4.STL" scale="0.001 0.001 0.001" />

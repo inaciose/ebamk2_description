@@ -128,7 +128,7 @@
     <child link="link_4" />
     <axis xyz="0 1 0" />
     <limit effort="0" velocity="0" lower="-3.14159" upper="3.14159"/>
-    <!--<mimic joint="joint_3" multiplier="1" offset="0" />-->
+    <mimic joint="joint_3" multiplier="1" offset="0" />
   </joint>
 
   <!-- LINK 4 CLAW SUPPORT -->
